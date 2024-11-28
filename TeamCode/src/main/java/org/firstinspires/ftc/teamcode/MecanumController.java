@@ -16,12 +16,12 @@ public class MecanumController {
     }
 
     /**
-     * First proposal for mecanum wheel
+     * First proposal for mecanum wheel software
      *
      * @param angle angle (in degrees) at which the robot should drift to
      * @param magnitude how fast or slow the robot should travel, on a scale from zero to one
      */
-    public void moveBot1(float angle, float magnitude) {
+    public void moveBot1(double angle, double magnitude) {
         // Represents the top left and bottom right motors
         // These motors have wheels that move to the diagonal right when turned
         double diagonalRight;

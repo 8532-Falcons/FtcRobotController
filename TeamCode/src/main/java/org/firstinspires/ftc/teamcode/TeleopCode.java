@@ -32,9 +32,17 @@ public class TeleopCode extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            // Moves towards
-            mecControl.moveBot1(Math.atan2(gamepad1.right_stick_y, gamepad1.right_stick_x),
-                    Math.hypot(Math.abs(gamepad1.right_stick_x), Math.abs(gamepad1.right_stick_y)));
+            // Records gamepad values as variables
+            double x = gamepad1.right_stick_x;
+            double y = gamepad1.right_stick_y;
+            /*
+            Uses mecanum controller to move robot
+            Robot moves forward or backward with right stick
+            Stick up/down - robot moves forwards/backwards
+            Stick left/right - robot moves left/right, facing forwards
+            Stick diagonal - robot moves diagonal, facing forwards
+            */
+            mecControl.moveBot1(Math.atan2(y, x), Math.hypot(Math.abs(x), Math.abs(y)));
         }
     }
 }

@@ -26,13 +26,13 @@ public class MecanumController {
         // These motors have wheels that move to the diagonal right when turned
         double diagonalRight;
         // Sets diagonalRight to sin(angle - π/4)
-        diagonalRight = Math.sin(Math.toRadians(angle) - Math.PI / 4);
+        diagonalRight = Math.sin(Math.toRadians(angle) - Math.PI / 4) * magnitude;
 
         // Represents the top right and bottom left motors
         // These motors have wheels that move to the diagonal left when turned
         double diagonalLeft;
         // Sets diagonalLeft to sin(angle - 3π/4)
-        diagonalLeft = Math.sin(Math.toRadians(angle) - 3 * Math.PI / 4);
+        diagonalLeft = Math.sin(Math.toRadians(angle) - 3 * Math.PI / 4) * magnitude;
 
         frontLeft.setPower(diagonalRight);
         frontRight.setPower(diagonalLeft);

@@ -16,23 +16,25 @@ public class TeleopCode extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        /*
-        Initialization period
-        Motors are fetched from hardwareMap
-         */
+        // INITIALIZATION PERIOD - RUNS ONCE AFTER INIT BUTTON
+        // Motors are fetched from hardwareMap
         frontLeft = hardwareMap.dcMotor.get("Front Left");
         frontRight = hardwareMap.dcMotor.get("Front Right");
         backLeft = hardwareMap.dcMotor.get("Back Left");
         backRight = hardwareMap.dcMotor.get("Back Right");
+        // New mecanum controller created using motors
         MecanumController mecControl = new MecanumController(frontLeft, frontRight, backLeft,
                 backRight);
 
+        // Op mode waits for the play button to be pressed
         waitForStart();
 
+        // TELEOP PERIOD - CODE LOOPS WHILE OP MODE IS ACTIVE
         while (opModeIsActive()) {
-            // Records gamepad values as variables
+            // Stores gamepad values as variables
             double x = gamepad1.right_stick_x;
             double y = gamepad1.right_stick_y;
+
             /*
             Uses mecanum controller to move robot
             Robot moves forward or backward with right stick
@@ -41,6 +43,8 @@ public class TeleopCode extends LinearOpMode {
             Stick diagonal - robot moves diagonal, facing forwards
             */
             mecControl.moveBot1(Math.atan2(y, x), Math.hypot(Math.abs(x), Math.abs(y)));
+
+            // TODO: implement singleSpotDrift as controls
         }
     }
 }

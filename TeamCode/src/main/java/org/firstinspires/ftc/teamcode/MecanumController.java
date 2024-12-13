@@ -17,8 +17,10 @@ public class MecanumController {
 
     /**
      * First proposal for mecanum wheel software
+     * <br>
+     * Moves the robot forward, backwards, sideways diagonally without changing orientation
      *
-     * @param angle angle (in degrees) at which the robot should drift to
+     * @param angle angle (in degrees) at which the robot should drift
      * @param magnitude how fast or slow the robot should travel, on a scale from zero to one
      */
     public void moveBot1(double angle, double magnitude) {
@@ -40,7 +42,12 @@ public class MecanumController {
         backRight.setPower(diagonalLeft);
     }
 
+    /**
+     * Rotates or turns the robot without moving
+     *
+     * @param angle final angle to which the robot should rotate to
+     */
     public static void singleSpotDrift(float angle) {
-
+        // TODO: implement singleSpotDrift
     }
 }

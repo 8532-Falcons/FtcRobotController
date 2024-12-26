@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
  * This code is the main central teleop code! The code in this file will run after the play button
@@ -18,10 +19,11 @@ public class TeleopCode extends LinearOpMode {
     public void runOpMode() {
         // INITIALIZATION PERIOD - RUNS ONCE AFTER INIT BUTTON
         // Motors are fetched from hardwareMap
-        frontLeft = hardwareMap.dcMotor.get("Front Left");
-        frontRight = hardwareMap.dcMotor.get("Front Right");
-        backLeft = hardwareMap.dcMotor.get("Back Left");
-        backRight = hardwareMap.dcMotor.get("Back Right");
+        frontLeft = hardwareMap.dcMotor.get("Front Left"); // front-left wheel
+        frontRight = hardwareMap.dcMotor.get("Front Right"); // front-right wheel
+        backLeft = hardwareMap.dcMotor.get("Back Left"); // back-left wheel
+        backRight = hardwareMap.dcMotor.get("Back Right"); // back-right wheel
+
         // New mecanum controller created using motors
         MecanumController mecControl = new MecanumController(frontLeft, frontRight, backLeft,
                 backRight);
@@ -42,9 +44,17 @@ public class TeleopCode extends LinearOpMode {
             Stick left/right - robot moves left/right, facing forwards
             Stick diagonal - robot moves diagonal, facing forwards
             */
-            mecControl.moveBot1(Math.atan2(y, x), Math.hypot(Math.abs(x), Math.abs(y)));
+            mecControl.moveBot(Math.atan2(y, x), Math.hypot(Math.abs(x), Math.abs(y)));
 
-            // TODO: implement singleSpotDrift as controls
+            /* TODO: implement singleSpotDrift as controls
+            1) What are the controls?
+            2) Use singleSpotDrift from MecanumController
+             */
+
+            /* TODO: implement arm & claw within controls
+            Make sure to note the controls!
+            Alternative: develop claw & arm controls separately
+             */
         }
     }
 }

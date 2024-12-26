@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
  * Manages the robot's mecanum drivetrain controls
@@ -13,6 +14,10 @@ public class MecanumController {
         this.frontRight = frontRight;
         this.backLeft = backLeft;
         this.backRight = backRight;
+
+        // Right motors are reversed
+        this.frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        this.backRight.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     /**
@@ -23,7 +28,7 @@ public class MecanumController {
      * @param angle angle (in degrees) at which the robot should drift
      * @param magnitude how fast or slow the robot should travel, on a scale from zero to one
      */
-    public void moveBot1(double angle, double magnitude) {
+    public void moveBot(double angle, double magnitude) {
         // Represents the top left and bottom right motors
         // These motors have wheels that move to the diagonal right when turned
         double diagonalRight;

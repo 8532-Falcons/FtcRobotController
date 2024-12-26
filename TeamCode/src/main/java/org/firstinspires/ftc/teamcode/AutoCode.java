@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
  * This code is the main central autonomous code! The code in this file will run once after the code
@@ -16,17 +17,21 @@ public class AutoCode extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        /*
-        Initialization period
-        Motors are fetched from hardwareMap
-         */
-        frontLeft = hardwareMap.dcMotor.get("Front Left");
-        frontRight = hardwareMap.dcMotor.get("Front Right");
-        backLeft = hardwareMap.dcMotor.get("Back Left");
-        backRight = hardwareMap.dcMotor.get("Back Right");
+        // INITIALIZATION PERIOD - RUNS ONCE AFTER INIT BUTTON
+        // Motors are fetched from hardwareMap
+        frontLeft = hardwareMap.dcMotor.get("Front Left"); // front-left wheel
+        frontRight = hardwareMap.dcMotor.get("Front Right"); // front-right wheel
+        backLeft = hardwareMap.dcMotor.get("Back Left"); // back-left wheel
+        backRight = hardwareMap.dcMotor.get("Back Right"); // back-right wheel
 
+        // New mecanum controller created using motors
+        MecanumController mecControl = new MecanumController(frontLeft, frontRight, backLeft,
+                backRight);
+
+        // Op mode waits for the play button to be pressed
         waitForStart();
 
-
+        // TELEOP PERIOD - CODE RUNS ONCE
+        // TODO: Implement autonomous code
     }
 }

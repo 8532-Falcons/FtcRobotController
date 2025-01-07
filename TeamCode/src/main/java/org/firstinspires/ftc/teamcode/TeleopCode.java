@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
@@ -8,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * is pressed, and is used during the player-controlled period.
 */
 
+@TeleOp(name="Teleop 2024-25", group = "")
 public class TeleopCode extends LinearOpMode {
     private DcMotor frontLeft;
     private DcMotor frontRight;

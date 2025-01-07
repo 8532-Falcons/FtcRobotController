@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
@@ -8,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * is initialized, but cannot run during the player-controlled period.
  */
 
+@Autonomous(name="Auto 2024-25", group = "")
 public class AutoCode extends LinearOpMode {
     private DcMotor frontLeft;
     private DcMotor frontRight;

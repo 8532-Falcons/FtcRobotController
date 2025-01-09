@@ -52,7 +52,15 @@ public class MecanumController {
      *
      * @param angle final angle to which the robot should rotate to
      */
-    public static void singleSpotDrift(float angle) {
+    public static void singleSpotDrift() {
         // TODO: implement singleSpotDrift
+        // Add angle functionality
+        double forwardAmount;
+        forwardAmount = 0.5
+        // Left wheels must move forward by a certain amount, and right wheels must move backward by a certain amount
+        frontLeft.setPower(forwardAmount);
+        frontRight.setPower((-1) * forwardAmount);
+        backLeft.setPower(forwardAmount);
+        backRight.setPower((-1) * forwardAmount);
     }
 }

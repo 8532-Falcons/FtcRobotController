@@ -36,7 +36,7 @@ public class TeleopCode extends LinearOpMode {
             // Stores gamepad values as variables
             double x = gamepad1.right_stick_x;
             double y = gamepad1.right_stick_y;
-
+            double a = gamepad1.a;
             /*
             Uses mecanum controller to move robot
             Robot moves forward or backward with right stick
@@ -50,7 +50,9 @@ public class TeleopCode extends LinearOpMode {
             1) What are the controls?
             2) Use singleSpotDrift from MecanumController
              */
-
+            if (gamepad1.a) {
+                mecControl.singleSpotDrift();
+            }
             /* TODO: implement arm & claw within controls
             Make sure to note the controls!
             Alternative: develop claw & arm controls separately

@@ -34,6 +34,8 @@ public class AutoCode extends LinearOpMode {
         // Op mode waits for the play button to be pressed
         waitForStart();
 
+        mecControl.singleSpotDrift();
+
         // TELEOP PERIOD - CODE RUNS ONCE
         // TODO: Implement autonomous code
     }

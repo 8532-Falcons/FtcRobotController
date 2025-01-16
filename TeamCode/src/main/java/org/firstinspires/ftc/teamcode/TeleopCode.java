@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * is pressed, and is used during the player-controlled period.
 */
 
+@TeleOp(name = "TeleopCode", group = "")
 public class TeleopCode extends LinearOpMode {
     private DcMotor frontLeft;
     private DcMotor frontRight;
@@ -19,10 +21,10 @@ public class TeleopCode extends LinearOpMode {
     public void runOpMode() {
         // INITIALIZATION PERIOD - RUNS ONCE AFTER INIT BUTTON
         // Motors are fetched from hardwareMap
-        frontLeft = hardwareMap.dcMotor.get("Front Left"); // front-left wheel
-        frontRight = hardwareMap.dcMotor.get("Front Right"); // front-right wheel
-        backLeft = hardwareMap.dcMotor.get("Back Left"); // back-left wheel
-        backRight = hardwareMap.dcMotor.get("Back Right"); // back-right wheel
+        frontLeft = hardwareMap.dcMotor.get("top left"); // front-left wheel
+        frontRight = hardwareMap.dcMotor.get("top right"); // front-right wheel
+        backLeft = hardwareMap.dcMotor.get("bottom left"); // back-left wheel
+        backRight = hardwareMap.dcMotor.get("bottom right"); // back-right wheel
 
         // New mecanum controller created using motors
         MecanumController mecControl = new MecanumController(frontLeft, frontRight, backLeft,

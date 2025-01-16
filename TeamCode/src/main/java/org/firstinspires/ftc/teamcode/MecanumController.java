@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  */
 public class MecanumController {
     private final DcMotor frontLeft, frontRight, backLeft, backRight;
-    private static final double FORWARD_AMOUNT = 0.5;
+    private static final double FORWARD_AMOUNT = 20;
 
     public MecanumController(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight) {
         this.frontLeft = frontLeft;
@@ -51,11 +51,12 @@ public class MecanumController {
     /**
      * Rotates or turns the robot without moving
      *
-     * @param angle final angle to which the robot should rotate to
+     * @param angle final angle to which the robot should rotate to (currently extraneous)
      */
     public void singleSpotDrift(float angle) {
         // TODO: angle functionality
         double forwardAmount;
+        // Local variable
         forwardAmount = 0.5;
         // Left wheels must move forward by a certain amount, and right wheels must move backward by a certain amount
         frontLeft.setPower(FORWARD_AMOUNT);

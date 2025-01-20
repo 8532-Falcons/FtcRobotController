@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
  * This code is the main central teleop code! The code in this file will run after the play button
@@ -46,7 +45,7 @@ public class TeleopCode extends LinearOpMode {
             Stick left/right - robot moves left/right, facing forwards
             Stick diagonal - robot moves diagonal, facing forwards
             */
-            mecControl.moveBot(Math.atan2(y, x), Math.hypot(Math.abs(x), Math.abs(y)));
+            mecControl.moveBot(Math.hypot(Math.abs(x), Math.abs(y)), Math.atan2(y, x));
 
             /* TODO: implement singleSpotDrift as controls
             1) What are the controls?

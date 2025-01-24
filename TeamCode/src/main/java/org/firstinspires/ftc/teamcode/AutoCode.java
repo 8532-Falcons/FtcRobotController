@@ -47,8 +47,8 @@ public class AutoCode extends LinearOpMode {
         arm = hardwareMap.dcMotor.get("Arm"); // arm motor
 
         // Fetches servos from hardwareMap
-        intake = hardwareMap.crservo.get("intake"); // intake servo
-        wrist  = hardwareMap.servo.get("wrist"); // wrist servo
+        intake = hardwareMap.crservo.get("Intake"); // intake servo
+        wrist  = hardwareMap.servo.get("Wrist"); // wrist servo
 
         // Fetches REV IMU from hardwareMap and initializes it for
         imu = hardwareMap.get(IMU.class, "imu");
@@ -69,13 +69,17 @@ public class AutoCode extends LinearOpMode {
 
         // AUTO PERIOD - CODE RUNS ONCE
 
-        moveBotTest(0, 1, 2);
+        armControl.moveArm(90 * armControl.ARM_TICKS_PER_DEGREE);
+        telemetry.addLine("Reached 90");
+        telemetry.update();
 
-        moveBotTest(90, 1, 2);
+        sleep(5000);
 
-        moveBotTest(180, 1, 2);
+        armControl.moveArm(135 * armControl.ARM_TICKS_PER_DEGREE);
+        telemetry.addLine("Reached 135");
+        telemetry.update();
 
-        moveBotTest(270, 1, 2);
+        sleep(5000);
 
         //singleSpotDriftTest(5);
     }

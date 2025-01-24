@@ -33,7 +33,7 @@ public class MecanumController {
      * @param magnitude how fast or slow the robot should travel, on a scale from zero to one
      * @param angle     angle (in degrees) at which the robot should drift
      *                  (0 = forward, 90 = left, 180 = reverse, 270 = right)
-     * @return List of motors & their power levels
+     * @return Array of motors & their power levels
      */
     public String[] moveBot(double magnitude, double angle) {
         // Represents the front-left and back-right motors

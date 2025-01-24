@@ -44,6 +44,30 @@ public class TeleopCode extends LinearOpMode {
         // Op mode waits for the play button to be pressed
         waitForStart();
 
+        armControl.moveArm(90);
+
+        sleep(1000);
+
+        telemetry.addLine("Reached 90");
+        telemetry.update();
+
+        armControl.moveArm(180);
+
+
+        sleep(1000);
+
+        telemetry.addLine("Reached 180");
+        telemetry.update();
+
+        armControl.moveArm(270);
+
+        sleep(1000);
+
+        telemetry.addLine("Reached 270");
+        telemetry.update();
+
+        armControl.moveArm(0);
+
         // TELEOP PERIOD - CODE LOOPS WHILE OP MODE IS ACTIVE
         while (opModeIsActive()) {
             // Stores gamepad values as variables so they do not need to be called multiple times
@@ -53,12 +77,15 @@ public class TeleopCode extends LinearOpMode {
             /*
             Uses mecanum controller to move robot
             Robot moves forward or backward with right stick
-            Stick up/down - robot moves forwards/backwards
+            Stick up/down - robot moves forwards/backwards, facing forwards
             Stick left/right - robot moves left/right, facing forwards
             Stick diagonal - robot moves diagonal, facing forwards
             */
-            // Note: for the angle, the code sets opp to -x & adj to y when using atan2
-            // This means that 0º = north & angle increases as joystick goes counterclockwise
+            /*
+            Note: for the angle, the code sets opp to -x & adj to y when using atan^2
+            These settings set north (0, 1) as 0º and increases angle as joystick goes
+            counterclockwise
+             */
             if (Math.hypot(x, y) > 0) {
                 mecControl.moveBot(Math.hypot(x, y), Math.toDegrees(Math.atan2(-x, -y)));
             }
@@ -71,15 +98,33 @@ public class TeleopCode extends LinearOpMode {
                 mecControl.singleSpotDrift(0);
             }
 
+            // ARM CONTROLS
+
             // Pressing d-pad down collects item sample
             if (gamepad1.dpad_down) {
                armControl.collect();
             }
-
             // Pressing d-pad up allows arm to clear barrier
             else if (gamepad1.dpad_up) {
                 armControl.clearBarrier();
             }
+            // Pressing d-pad left to possess items
+            else if (gamepad1.dpad_left) {
+                armControl.holdItem();
+            }
+
+            // SCORING MECHANISM
+
+            // Pressing right bumper to score sample on low
+            else if (gamepad1.right_bumper)  {
+                armControl.scoreSampleLow();
+            }
+
+            //
+            /*else if (gamepad1.right_trigger > 0) {
+                armControl.scoreSpecimen();
+            }*/
+
         }
     }
 }

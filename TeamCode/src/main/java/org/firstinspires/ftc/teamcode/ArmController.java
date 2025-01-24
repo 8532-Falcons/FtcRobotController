@@ -32,9 +32,9 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Controller that manages the robot's arm & intake
  */
 public class ArmController {
-    private DcMotor arm;
-    private Servo wrist;
-    private CRServo intake;
+    private final DcMotor arm;
+    private final Servo wrist;
+    private final CRServo intake;
 
     /* This constant is the number of encoder ticks for each degree of rotation of the arm. */
     final double ARM_TICKS_PER_DEGREE =
@@ -62,10 +62,6 @@ public class ArmController {
 
     /* A number in degrees that the triggers can adjust the arm position by */
     final double FUDGE_FACTOR = 15 * ARM_TICKS_PER_DEGREE;
-
-    /* Variables that are used to set the arm to a specific position */
-    double armPosition = (int) ARM_COLLAPSED_INTO_ROBOT;
-    double armPositionFudgeFactor;
 
     /**
      * Actions that the intake can do
@@ -104,14 +100,6 @@ public class ArmController {
         this.wrist = wrist;
         this.intake = intake;
 
-        // When arm is set to zero power, then the motor will stop and
-        this.arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        // Sets
-        this.arm.setTargetPosition(0);
-        // Runs arm motor until encoder reaches zero
-        this.arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        // Resets encoder position to zero
-        this.arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     /**

@@ -10,7 +10,7 @@
            <RevRobotics40HDHexMotor name="Back Left " port="3" />
             <!--> Servos </!-->
            <Servo name="Wrist" port="0" />
-           <CRServo name="Intake" port="1" />
+           <ContinuousRotationServo name="Intake" port="1" />
             <!--> IMU (comes by default) </!-->
            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
        </LynxModule>

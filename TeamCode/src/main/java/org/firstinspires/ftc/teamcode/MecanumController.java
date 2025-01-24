@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
- * Manages the robot's mecanum drivetrain controls
+ * Controller that manages the robot's mecanum drivetrain controls
  */
 public class MecanumController {
     private final DcMotor frontLeft, frontRight, backLeft, backRight;
@@ -17,8 +17,14 @@ public class MecanumController {
         this.backRight = backRight;
 
         // Left motors are reversed
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
+
+        // When power is set to zero, the motors will be set
+        this.frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     /**
@@ -27,12 +33,13 @@ public class MecanumController {
      * @param magnitude how fast or slow the robot should travel, on a scale from zero to one
      * @param angle     angle (in degrees) at which the robot should drift
      *                  (0 = forward, 90 = left, 180 = reverse, 270 = right)
+     * @return List of motors & their power levels
      */
     public String[] moveBot(double magnitude, double angle) {
         // Represents the front-left and back-right motors
         // These motors have wheels that, when turned, exert a force facing the diagonal-right
         double diagonalLeftToRight;
-        // Sets diagonalLeftToRight to sin(angle + 7π/4)
+        // Sets diagonalLeftToRight to sin(angle + 3π/4)
         diagonalLeftToRight = Math.sin(Math.toRadians(angle) + (3 * Math.PI / 4)) * magnitude;
 
         // Represents the front-right and back-left motors
@@ -64,13 +71,13 @@ public class MecanumController {
         forwardAmount = 0.5;
         // Left wheels must move forward by a certain amount, and right wheels must move backward by a certain amount
         frontLeft.setPower(FORWARD_AMOUNT);
-        frontRight.setPower((-1) * FORWARD_AMOUNT);
+        frontRight.setPower(-1 * FORWARD_AMOUNT);
         backLeft.setPower(FORWARD_AMOUNT);
-        backRight.setPower((-1) * FORWARD_AMOUNT);
+        backRight.setPower(-1 * FORWARD_AMOUNT);
     }
 
     /**
-     * Stops the robot
+     * Brakes the robot
      */
     public void brake() {
         frontLeft.setPower(0);

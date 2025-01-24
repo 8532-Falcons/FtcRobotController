@@ -5,8 +5,10 @@ import androidx.annotation.NonNull;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -18,15 +20,18 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 @Autonomous(name = "AutoCode", group = "")
 public class AutoCode extends LinearOpMode {
-    private DcMotor frontLeft, frontRight, backLeft, backRight;
+    private DcMotor frontLeft, frontRight, backLeft, backRight, arm;
+    private Servo wrist;
+    private CRServo intake;
     private IMU imu;
     private MecanumController mecControl;
+    private ArmController armControl;
 
     @Override
     public void runOpMode() {
         // INITIALIZATION PERIOD - RUNS ONCE AFTER INIT BUTTON
 
-        // Records orientation of IMU, which w
+        // Records orientation of IMU, which will be used in initialization
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
                 RevHubOrientationOnRobot.LogoFacingDirection.UP;
         RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  =
@@ -34,20 +39,30 @@ public class AutoCode extends LinearOpMode {
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection,
                 usbDirection);
 
-        // Motors are fetched from hardwareMap
+        // Fetches motors from hardwareMap
         frontLeft = hardwareMap.dcMotor.get("Front Left"); // front-left wheel
         frontRight = hardwareMap.dcMotor.get("Front Right"); // front-right wheel
         backLeft = hardwareMap.dcMotor.get("Back Left"); // back-left wheel
         backRight = hardwareMap.dcMotor.get("Back Right"); // back-right wheel
+        arm = hardwareMap.dcMotor.get("Arm"); // arm motor
 
-        // REV IMU is fetched from hardwareMap and initialized
+        // Fetches servos from hardwareMap
+        intake = hardwareMap.crservo.get("intake"); // intake servo
+        wrist  = hardwareMap.servo.get("wrist"); // wrist servo
+
+        // Fetches REV IMU from hardwareMap and initializes it for
         imu = hardwareMap.get(IMU.class, "imu");
         imu.initialize(new IMU.Parameters(orientationOnRobot));
         // Resets IMU yaw (left-right movement)
         imu.resetYaw();
 
-        // Mecanum controller initialized using motors
+        // Initializes new mecanum controller using motors
         mecControl = new MecanumController(frontLeft, frontRight, backLeft, backRight);
+        // Initializes new arm controller using motors and servos
+        armControl = new ArmController(arm, wrist, intake);
+
+        // Resets arm
+        armControl.reset();
 
         // Op mode waits for the play button to be pressed
         waitForStart();
@@ -103,7 +118,7 @@ public class AutoCode extends LinearOpMode {
         // Updates telemetry
         telemetry.update();
         // Runs for five seconds
-        sleep((long) time * 5000);
+        sleep((long) time * 1000);
         // Stops robot
         mecControl.brake();
     }

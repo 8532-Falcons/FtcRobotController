@@ -32,15 +32,15 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Controller that manages the robot's arm & intake
  */
 public class ArmController {
-    private final DcMotor arm;
-    private final Servo wrist;
-    private final CRServo intake;
+    private DcMotor arm;
+    private Servo wrist;
+    private CRServo intake;
 
     /* This constant is the number of encoder ticks for each degree of rotation of the arm. */
     final double ARM_TICKS_PER_DEGREE =
         28 // number of encoder ticks per rotation of the bare motor
-            * 250047.0 / 4913.0 // This is the exact gear ratio of the 50.9:1 Yellow Jacket gearbox
-            * 100.0 / 20.0 // This is the external gear reduction, a 20T pinion gear that drives a 100T hub-mount gear
+            * ((1.0 + (47.0 / 17.0)) * (1.0 + (46.0 / 11.0))) // This is the exact gear ratio of the 50.9:1 Yellow Jacket gearbox
+            // * 100.0 / 20.0 // This is the external gear reduction, a 20T pinion gear that drives a 100T hub-mount gear
             * 1/360.0; // we want ticks per degree, not per rotation
 
     final double ARM_COLLAPSED_INTO_ROBOT  = 0;
@@ -100,6 +100,7 @@ public class ArmController {
         this.wrist = wrist;
         this.intake = intake;
 
+        this.arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     /**
@@ -177,7 +178,8 @@ public class ArmController {
     public void reset() {
         controlIntake(INTAKE_ACTION.TURN_OFF); // stops intake
         foldWrist(WRIST_POSITION.IN); // folds wrist in
-        moveArm(0); // moves arm to zero
+        arm.setTargetPosition(0); // moves to target position
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION); // runs to position
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // resets arm encoder
     }
 

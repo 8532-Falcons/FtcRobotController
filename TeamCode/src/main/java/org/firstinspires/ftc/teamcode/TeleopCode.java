@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static java.lang.Math.abs;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -11,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * is pressed, and is used during the player-controlled period.
 */
 
-@TeleOp(name="Teleop 2024-25", group = "")
+@TeleOp(name="Teleop 2024-25", group = "2024-25")
 public class TeleopCode extends LinearOpMode {
     private DcMotor frontLeft, frontRight, backLeft, backRight, arm;
     private Servo wrist;
@@ -70,9 +72,12 @@ public class TeleopCode extends LinearOpMode {
 
         // TELEOP PERIOD - CODE LOOPS WHILE OP MODE IS ACTIVE
         while (opModeIsActive()) {
-            // Stores gamepad values as variables so they do not need to be called multiple times
-            double x = gamepad1.right_stick_x;
-            double y = gamepad1.right_stick_y;
+            // Stores gamepad config_arm_tester.xml as variables so they do not need to be called multiple times
+            double right_x = gamepad1.right_stick_x;
+            double right_y = gamepad1.right_stick_y;
+
+            double left_x = gamepad1.left_stick_x;
+            double left_y = gamepad1.left_stick_y;
 
             /*
             Uses mecanum controller to move robot
@@ -86,16 +91,19 @@ public class TeleopCode extends LinearOpMode {
             These settings set north (0, 1) as 0º and increases angle as joystick goes
             counterclockwise
              */
-            if (Math.hypot(x, y) > 0) {
-                mecControl.moveBot(Math.hypot(x, y), Math.toDegrees(Math.atan2(-x, -y)));
+            if (Math.hypot(left_x, left_y) > 0) {
+                mecControl.moveBot(Math.hypot(left_x, left_y), Math.toDegrees(Math.atan2(-left_x, -left_y)));
             }
 
-            /* TODO: implement singleSpotDrift as controls
-            1) What are the controls?
-            2) Use singleSpotDrift from MecanumController
+            /*
+            Uses right 
              */
-            if (gamepad1.a) {
-                mecControl.singleSpotDrift(0);
+            else if (Math.hypot(right_x, right_y) > 0) {
+                mecControl.singleSpotDrift(0, (int) (right_x / abs(right_x)));
+            }
+
+            else {
+                mecControl.brake();
             }
 
             // ARM CONTROLS

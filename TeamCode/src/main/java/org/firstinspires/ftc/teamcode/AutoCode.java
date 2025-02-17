@@ -10,15 +10,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-
-
 /**
  * This code is the main central autonomous code! The code in this file will run once after the code
  * is initialized, but cannot run during the player-controlled period.
  */
 
-@Autonomous(name = "AutoCode", group = "")
+@Autonomous(name = "AutoCode", group = "2024-25")
 public class AutoCode extends LinearOpMode {
     private DcMotor frontLeft, frontRight, backLeft, backRight, arm;
     private Servo wrist;
@@ -51,7 +48,7 @@ public class AutoCode extends LinearOpMode {
         wrist  = hardwareMap.servo.get("Wrist"); // wrist servo
 
         // Fetches REV IMU from hardwareMap and initializes it for
-        imu = hardwareMap.get(IMU.class, "imu");
+        imu = hardwareMap.get(IMU.class, "IMU");
         imu.initialize(new IMU.Parameters(orientationOnRobot));
         // Resets IMU yaw (left-right movement)
         imu.resetYaw();
@@ -67,9 +64,30 @@ public class AutoCode extends LinearOpMode {
         // Op mode waits for the play button to be pressed
         waitForStart();
 
+        armControl.moveArm(270 * armControl.ARM_TICKS_PER_DEGREE);
+
+        sleep(5000);
+
+        armControl.moveArm(360 * armControl.ARM_TICKS_PER_DEGREE);
+
+        sleep(5000);
+
+        armControl.moveArm(45 * armControl.ARM_TICKS_PER_DEGREE);
+
+        sleep(5000);
+
+
+
+//        armControl.collect();
+//
+//        sleep(1000);
+//        armControl.clearBarrier();
+//
+//        sleep(1000);
+
         // AUTO PERIOD - CODE RUNS ONCE
 
-        armControl.moveArm(90 * armControl.ARM_TICKS_PER_DEGREE);
+        /*armControl.moveArm(90 * armControl.ARM_TICKS_PER_DEGREE);
         telemetry.addLine("Reached 90");
         telemetry.update();
 
@@ -81,72 +99,12 @@ public class AutoCode extends LinearOpMode {
 
         sleep(5000);
 
+        armControl.moveArm(180 * armControl.ARM_TICKS_PER_DEGREE);
+        telemetry.addLine("Reached 180");
+        telemetry.update();
+
+        sleep(5000);*/
+
         //singleSpotDriftTest(5);
-    }
-
-    /**
-     * Tests individual DC motors for correct port and orientation
-     * @param motor Motor being tested
-     * @param name  Common name of motor
-     */
-    public void singleMotorTest(@NonNull DcMotor motor, String name) {
-        // Starts motor power to max power of one
-        motor.setPower(1);
-        // Adds motor name to telemetry and updates
-        telemetry.addLine(name);
-        telemetry.update();
-        // Runs for one second
-        sleep(1000);
-        // Stops motor
-        motor.setPower(0);
-    }
-
-    /**
-     * Tests mecanum movement (represented in {@link MecanumController#moveBot(double, double)})
-     *
-     * @param angle     angle (in degrees) of drift
-     * @param magnitude speed of motor, from -1.0 to 1.0
-     * @param time      time (in seconds) of movement
-     */
-    public void moveBotTest(int angle, int magnitude, int time) {
-        // Moves bot and power values for each wheel motor
-        String[] values = mecControl.moveBot(magnitude, angle);
-
-        // Adds angle & magnitude to telemetry
-        telemetry.addLine("Angle: " + angle + "º");
-        telemetry.addLine("Magnitude: " + magnitude);
-        // Adds each motor's power value
-        for (String value : values) {
-            telemetry.addLine(value);
-        }
-        // Updates telemetry
-        telemetry.update();
-        // Runs for five seconds
-        sleep((long) time * 1000);
-        // Stops robot
-        mecControl.brake();
-    }
-
-    /**
-     * Tests single-spot drift (represented in {@link MecanumController#singleSpotDrift(float)})
-     * @param time Amount of time (in seconds) drifting (turning)
-     */
-    public void singleSpotDriftTest(int time) {
-        // Gets initial yaw (left-right angle) of robot
-        double initAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        // Adds yaw to telemetry
-        telemetry.addLine("Initial angle" + initAngle);
-
-        // Runs singleSpotDrift for the specified time
-        mecControl.singleSpotDrift(0); // power
-        sleep((long) time * 1000);
-        // Stops robot
-        mecControl.brake();
-
-        // Adds net yaw that robot turned to telemetry
-        double angleTurned = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        telemetry.addLine("Angle turned: " + angleTurned);
-        // Updates telemetry
-        telemetry.update();
     }
 }

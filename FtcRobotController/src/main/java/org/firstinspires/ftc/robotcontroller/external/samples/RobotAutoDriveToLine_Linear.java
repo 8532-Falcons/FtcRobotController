@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
  *   which works well with a Rev V2 color sensor
  *
  *   Setting the correct WHITE_THRESHOLD value is key to stopping correctly.
- *   This should be set halfway between the bare-tile, and white-line "Alpha" values.
+ *   This should be set halfway between the bare-tile, and white-line "Alpha" config_arm_tester.xml.
  *   The reflected light value can be read on the screen once the OpMode has been INIT, but before it is STARTED.
  *   Move the sensor on and off the white line and note the min and max readings.
  *   Edit this code to make WHITE_THRESHOLD halfway between the min and max.
@@ -92,8 +92,8 @@ public class RobotAutoDriveToLine_Linear extends LinearOpMode {
         // rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Get a reference to our sensor object. It's recommended to use NormalizedColorSensor over
-        // ColorSensor, because NormalizedColorSensor consistently gives values between 0 and 1, while
-        // the values you get from ColorSensor are dependent on the specific sensor you're using.
+        // ColorSensor, because NormalizedColorSensor consistently gives config_arm_tester.xml between 0 and 1, while
+        // the config_arm_tester.xml you get from ColorSensor are dependent on the specific sensor you're using.
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
 
         // If necessary, turn ON the white LED (if there is no LED switch on the sensor)
@@ -131,7 +131,7 @@ public class RobotAutoDriveToLine_Linear extends LinearOpMode {
         rightDrive.setPower(0);
     }
 
-    // to obtain reflected light, read the normalized values from the color sensor.  Return the Alpha channel.
+    // to obtain reflected light, read the normalized config_arm_tester.xml from the color sensor.  Return the Alpha channel.
     double getBrightness() {
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         telemetry.addData("Light Level (0 to 1)",  "%4.2f", colors.alpha);

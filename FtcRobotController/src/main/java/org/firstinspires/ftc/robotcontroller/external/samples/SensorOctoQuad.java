@@ -45,7 +45,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * - Chan 1: for measuring forward motion on the right side of the robot.
  * - Chan 2: for measuring Lateral (strafing) motion.
  *
- * The encoder values may be reset to zero by pressing the X (left most) button on Gamepad 1.
+ * The encoder config_arm_tester.xml may be reset to zero by pressing the X (left most) button on Gamepad 1.
  *
  * This sample does not show how to interpret these readings, just how to obtain and display them.
  *
@@ -91,7 +91,7 @@ public class SensorOctoQuad extends LinearOpMode {
         // Any changes that are made should be saved in FLASH just in case there is a sensor power glitch.
         octoquad.saveParametersToFlash();
 
-        telemetry.addLine("\nPress START to read encoder values");
+        telemetry.addLine("\nPress START to read encoder config_arm_tester.xml");
         telemetry.update();
 
         waitForStart();
@@ -116,7 +116,7 @@ public class SensorOctoQuad extends LinearOpMode {
             // Read all the encoder data.  Load into local members.
             readOdometryPods();
 
-            // Display the values.
+            // Display the config_arm_tester.xml.
             telemetry.addData("Left ", "%8d counts", posLeft);
             telemetry.addData("Right", "%8d counts", posRight);
             telemetry.addData("Perp ", "%8d counts", posPerp);

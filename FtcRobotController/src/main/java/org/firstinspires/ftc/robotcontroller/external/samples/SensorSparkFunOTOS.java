@@ -90,7 +90,7 @@ public class SensorSparkFunOTOS extends LinearOpMode {
         // you can specify the offset for the sensor relative to the center of the
         // robot. The units default to inches and degrees, but if you want to use
         // different units, specify them before setting the offset! Note that as of
-        // firmware version 1.0, these values will be lost after a power cycle, so
+        // firmware version 1.0, these config_arm_tester.xml will be lost after a power cycle, so
         // you will need to set them each time you power up the sensor. For example, if
         // the sensor is mounted 5 inches to the left (negative X) and 10 inches
         // forward (positive Y) of the center of the robot, and mounted 90 degrees
@@ -102,7 +102,7 @@ public class SensorSparkFunOTOS extends LinearOpMode {
 
         // Here we can set the linear and angular scalars, which can compensate for
         // scaling issues with the sensor measurements. Note that as of firmware
-        // version 1.0, these values will be lost after a power cycle, so you will
+        // version 1.0, these config_arm_tester.xml will be lost after a power cycle, so you will
         // need to set them each time you power up the sensor. They can be any value
         // from 0.872 to 1.127 in increments of 0.001 (0.1%). It is recommended to
         // first set both scalars to 1.0, then calibrate the angular scalar, then

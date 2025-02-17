@@ -149,7 +149,7 @@ public class ConceptGamepadRumble extends LinearOpMode
             // This is useful to see how the rumble feels at various power levels.
             // ----------------------------------------------------------------------------------------
             if (currentLB) {
-                // Left Bumper is being pressed, so send left and right "trigger" values to left and right rumble motors.
+                // Left Bumper is being pressed, so send left and right "trigger" config_arm_tester.xml to left and right rumble motors.
                 gamepad1.rumble(gamepad1.left_trigger, gamepad1.right_trigger, Gamepad.RUMBLE_DURATION_CONTINUOUS);
 
                 // Show what is being sent to rumbles

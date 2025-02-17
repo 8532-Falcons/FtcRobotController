@@ -86,7 +86,7 @@ public class SensorIMUNonOrthogonal extends LinearOpMode
         // This sample expects the IMU to be in a REV Hub and named "imu".
         imu = hardwareMap.get(IMU.class, "imu");
 
-        /* Define how the hub is mounted to the robot to get the correct Yaw, Pitch and Roll values.
+        /* Define how the hub is mounted to the robot to get the correct Yaw, Pitch and Roll config_arm_tester.xml.
          *
          * You can apply up to three axis rotations to orient your Hub according to how it's mounted on the robot.
          *
@@ -145,7 +145,7 @@ public class SensorIMUNonOrthogonal extends LinearOpMode
          */
 
         // The next three lines define the desired axis rotations.
-        // To Do: EDIT these values to match YOUR mounting configuration.
+        // To Do: EDIT these config_arm_tester.xml to match YOUR mounting configuration.
         double xRotation = 0;  // enter the desired X rotation angle here.
         double yRotation = 0;  // enter the desired Y rotation angle here.
         double zRotation = 0;  // enter the desired Z rotation angle here.

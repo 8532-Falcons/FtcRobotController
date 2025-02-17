@@ -65,8 +65,8 @@ import java.util.Locale;
  *
  * There is a calibration status register available [...] that returns the calibration status
  * of the accelerometer (ACC), magnetometer (MAG), gyroscope (GYR), and overall system (SYS).
- * Each of these values range from 0 (uncalibrated) to 3 (fully calibrated). Calibration [ideally]
- * involves certain motions to get all 4 values at 3. The motions are as follows (though see the
+ * Each of these config_arm_tester.xml range from 0 (uncalibrated) to 3 (fully calibrated). Calibration [ideally]
+ * involves certain motions to get all 4 config_arm_tester.xml at 3. The motions are as follows (though see the
  * datasheet for more information):
  *
  *     1. GYR: Simply let the sensor sit flat for a few seconds.</ol>
@@ -75,7 +75,7 @@ import java.util.Locale;
  *             hold, etc. 6 or more movements of this type may be required. You can move through
  *             any axis you desire, but make sure that the device is lying at least once
  *             perpendicular to the x, y, and z axis.</ol>
- *     3. MAG: Move slowly in a figure 8 pattern in the air, until the calibration values reaches 3.</ol>
+ *     3. MAG: Move slowly in a figure 8 pattern in the air, until the calibration config_arm_tester.xml reaches 3.</ol>
  *     4. SYS: This will usually reach 3 when the other items have also reached 3. If not, continue
  *             slowly moving the device though various axes until it does."</ol>
  *

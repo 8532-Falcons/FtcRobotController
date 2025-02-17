@@ -26,26 +26,21 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Controller that manages the robot's arm & intake
  */
-public class ArmController {
+public class ArmOnlyController {
     private DcMotor arm;
-    private Servo wrist;
-    private CRServo intake;
 
     /* This constant is the number of encoder ticks for each degree of rotation of the arm. */
     final double ARM_TICKS_PER_DEGREE =
         28 // number of encoder ticks per rotation of the bare motor
             * ((1.0 + (47.0 / 17.0)) * (1.0 + (46.0 / 11.0))) // Gear ratio from 5203-2402-0019 (312 RPM)
-            //* 100.0 / 20.0 // This is the external gear reduction, a 20T pinion gear that drives a 100T hub-mount gear
             * 1/360.0; // converts from ticks per rotation to ticks per degrees
 
-    /*
-    Constants representing the degree the arm must be in for different situations
-     */
     final double ARM_COLLAPSED_INTO_ROBOT  = 0;
     final double ARM_COLLECT               = 250;
     final double ARM_CLEAR_BARRIER         = 230;
@@ -54,9 +49,7 @@ public class ArmController {
     final double ARM_ATTACH_HANGING_HOOK   = 120;
     final double ARM_WINCH_ROBOT           = 15;
 
-    /*
-    Variables to store the speed the intake servo should be set at to intake, and deposit game elements.
-    */
+    /* Variables to store the speed the intake servo should be set at to intake, and deposit game elements. */
     final double INTAKE_COLLECT    = -1.0;
     final double INTAKE_OFF        =  0.0;
     final double INTAKE_DEPOSIT    =  0.5;
@@ -66,7 +59,7 @@ public class ArmController {
     final double WRIST_FOLDED_OUT  = 0.5;
 
     /* A number in degrees that the triggers can adjust the arm position by */
-    final double FUDGE_FACTOR = 15 * ARM_TICKS_PER_DEGREE;
+    final double FUDGE_FACTOR = 15;
 
     /**
      * Actions that the intake can do
@@ -86,10 +79,22 @@ public class ArmController {
         TURN_OFF
     }
 
-    public ArmController(DcMotor arm, Servo wrist, CRServo intake) {
+    /**
+     * Positions the wrist can fold to
+     */
+    public enum WRIST_POSITION {
+        /**
+         * Wrist is folded in
+         */
+        IN,
+        /**
+         * Wrist is folded out
+         */
+        OUT
+    }
+
+    public ArmOnlyController(DcMotor arm) {
         this.arm = arm;
-        this.wrist = wrist;
-        this.intake = intake;
 
         this.arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
@@ -99,20 +104,20 @@ public class ArmController {
      * @param action action the intake should perform
      */
     public void controlIntake(INTAKE_ACTION action) {
-        switch (action) { // checks intake action
+        switch (action) { // checks action parameter
             case COLLECT: // collects samples
-                intake.setPower(INTAKE_COLLECT);
+                //intake.setPower(INTAKE_COLLECT);
                 break;
             case DEPOSIT: // deposits samples
-                intake.setPower(INTAKE_DEPOSIT);
+                //intake.setPower(INTAKE_DEPOSIT);
                 break;
             case TURN_OFF: // stops intake
-                intake.setPower(INTAKE_OFF);
+                // intake.setPower(INTAKE_OFF);
                 break;
         }
         /*
         Code above is equivalent to this if-then statement
-        Note: for switch statements, break keyword separates conditionals
+        Breaks separate conditionals
 
         if (action == INTAKE_ACTION.COLLECT) {
             intake.setPower(INTAKE_COLLECT); // Collects samples
@@ -127,28 +132,42 @@ public class ArmController {
     }
 
     /**
-     * Folds the robot wrist in
+     * Folds the robot wrist
+     * @param position position to which the wrist to fold to
      */
-    public void foldWristIn() {
-        wrist.setPosition(WRIST_FOLDED_IN);
+    public void foldWrist(WRIST_POSITION position) {
+        switch (position) {
+            case IN:
+               // wrist.setPosition(WRIST_FOLDED_IN);
+                break;
+            case OUT:
+                //wrist.setPosition(WRIST_FOLDED_OUT);
+                break;
+        }
+        /*
+        Code above is equivalent to if-then statement
+        Breaks separate conditionals
+
+        if (position == WRIST_POSITION.IN) {
+            wrist.setPosition(WRIST_FOLDED_IN); // Folds wrist in
+        }
+        else if (position == WRIST_POSITION.OUT) {
+            wrist.setPosition(WRIST_FOLDED_OUT); // Folds wrist out
+        }
+        */
     }
 
     /**
-     * Folds the robot wrist Out
+     * Moves arm to specific position
+     * @param armDegree Degree at which arm should rotate to
      */
-    public void foldWristOut() {
-        wrist.setPosition(WRIST_FOLDED_OUT);
-    }
-
-    /**
-     * @param armPosition Degree at which arm should rotate to
-     */
-    public void moveArm(double armPosition) {
-        // Sets the encoder target position to the arm position, multiplied by the arm tick
-        // conversion factor
-        arm.setTargetPosition((int) (armPosition * ARM_TICKS_PER_DEGREE));
-        ((DcMotorEx) arm).setVelocity(2100);
+    public void moveArm(double armDegree) {
+        //
+        arm.setTargetPosition((int) (armDegree * ARM_TICKS_PER_DEGREE));
+        // Tells arm to run to position
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // Caps arm motor power
+        ((DcMotorEx) arm).setVelocity(2100);
     }
 
     /**
@@ -156,8 +175,12 @@ public class ArmController {
      */
     public void reset() {
         controlIntake(INTAKE_ACTION.TURN_OFF); // stops intake
-        foldWristIn(); // folds wrist in
+        foldWrist(WRIST_POSITION.OUT); // folds wrist in
+//        arm.setTargetPosition(0); // moves to target position
+//        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION); // runs to position
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // resets arm encoder
+        arm.setTargetPosition(0); // moves to target position
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION); // runs to position
 //        moveArm(90 * ARM_TICKS_PER_DEGREE);
 //        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // resets arm encoder
     }
@@ -167,7 +190,7 @@ public class ArmController {
      */
     public void collect() {
         moveArm(ARM_COLLECT);
-        foldWristOut();
+        foldWrist(WRIST_POSITION.OUT);
         controlIntake(INTAKE_ACTION.COLLECT);
     }
 
@@ -186,7 +209,7 @@ public class ArmController {
     public void holdItem() {
         moveArm(ARM_COLLAPSED_INTO_ROBOT);
         controlIntake(INTAKE_ACTION.TURN_OFF);
-        foldWristIn();
+        foldWrist(WRIST_POSITION.IN);
     }
 
     /**
@@ -201,7 +224,7 @@ public class ArmController {
      */
     public void scoreSpecimen() {
         moveArm(ARM_SCORE_SPECIMEN);
-        foldWristIn();
+        foldWrist(WRIST_POSITION.IN);
     }
 
     /**
@@ -210,7 +233,7 @@ public class ArmController {
     public void scoreWinchPosition() {
         moveArm(ARM_ATTACH_HANGING_HOOK);
         controlIntake(INTAKE_ACTION.TURN_OFF);
-        foldWristIn();
+        foldWrist(WRIST_POSITION.IN);
     }
 
     /**
@@ -219,6 +242,6 @@ public class ArmController {
     public void scoreWinch() {
         moveArm(ARM_WINCH_ROBOT);
         controlIntake(INTAKE_ACTION.TURN_OFF);
-        foldWristIn();
+        foldWrist(WRIST_POSITION.IN);
     }
 }

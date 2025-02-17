@@ -93,7 +93,7 @@ public class SensorOctoQuadAdv extends LinearOpMode {
 
         // Display the OctoQuad firmware revision
         telemetry.addLine("OctoQuad Firmware v" + octoquad.getFirmwareVersion());
-        telemetry.addLine("\nPress START to read encoder values");
+        telemetry.addLine("\nPress START to read encoder config_arm_tester.xml");
         telemetry.update();
 
         waitForStart();
@@ -171,7 +171,7 @@ class OctoSwerveDrive {
         //        4) Update the code by entering the recorded Degrees value for each module as the angleOffset (last) parameter in the lines below.
         //
         // Rebuild and deploy the new code.  Verify that the telemetry now indicates 0 degrees when the wheels are facing forward.
-        // Also verify that the correct module values change appropriately when you manually spin (drive) and rotate (steer) a wheel.
+        // Also verify that the correct module config_arm_tester.xml change appropriately when you manually spin (drive) and rotate (steer) a wheel.
 
         allModules.add(LeftFront  = new OctoSwerveModule(octoquad, "LF ",0,0));//  Drive = 0, Steer = 4
         allModules.add(RightFront = new OctoSwerveModule(octoquad, "RF ",1,0));//  Drive = 1, Steer = 5
@@ -255,7 +255,7 @@ class OctoSwerveModule {
     }
 
     /***
-     * Calculate the Swerve module's position and velocity values
+     * Calculate the Swerve module's position and velocity config_arm_tester.xml
      * @param encoderDataBlock  most recent full data block read from OctoQuad.
      */
     public void updateModule(OctoQuad.EncoderDataBlock encoderDataBlock) {

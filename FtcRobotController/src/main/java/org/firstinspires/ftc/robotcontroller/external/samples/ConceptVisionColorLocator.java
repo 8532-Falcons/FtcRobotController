@@ -97,7 +97,7 @@ public class ConceptVisionColorLocator extends LinearOpMode
          *     an understanding of how they may effect the final blobs.  The "pixels" argument sets the NxN kernel size.
          *        .setBlurSize(int pixels)    Blurring an image helps to provide a smooth color transition between objects, and smoother contours.
          *                                    The higher the number of pixels, the more blurred the image becomes.
-         *                                    Note:  Even "pixels" values will be incremented to satisfy the "odd number" requirement.
+         *                                    Note:  Even "pixels" config_arm_tester.xml will be incremented to satisfy the "odd number" requirement.
          *                                    Blurring too much may hide smaller features.  A "pixels" size of 5 is good for a 320x240 image.
          *        .setErodeSize(int pixels)   Erosion removes floating pixels and thin lines so that only substantive objects remain.
          *                                    Erosion can grow holes inside regions, and also shrink objects.

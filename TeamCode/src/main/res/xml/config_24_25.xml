@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+
 <Robot type="FirstInspires-FTC">
     <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
         <!--> Control Hub </!-->
@@ -12,15 +13,15 @@
            <Servo name="Wrist" port="0" />
            <ContinuousRotationServo name="Intake" port="1" />
             <!--> IMU (comes by default) </!-->
-           <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+           <LynxEmbeddedIMU name="IMU" port="0" bus="0" />
        </LynxModule>
 
-        <!--> Expansion Hub 2 </!-->
+        <!--> Expansion Hub </!-->
        <LynxModule name="Expansion Hub 2" port="2">
            <!--> Large arm motor </!-->
            <goBILDA5202SeriesMotor name="Arm" port="0" />
            <!--> IMU (comes by default) </!-->
-           <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+           <LynxEmbeddedIMU name="Expansion IMU" port="0" bus="0" />
        </LynxModule>
    </LynxUsbDevice>
 </Robot>

@@ -64,16 +64,24 @@ public class MecanumController {
      *
      * @param angle final angle to which the robot should rotate to (currently extraneous)
      */
-    public void singleSpotDrift(float angle) {
+    public void singleSpotDrift(float angle, int direction) {
         // TODO: angle functionality
         double forwardAmount;
         // Local variable
         forwardAmount = 0.5;
         // Left wheels must move forward by a certain amount, and right wheels must move backward by a certain amount
-        frontLeft.setPower(FORWARD_AMOUNT);
-        frontRight.setPower(-1 * FORWARD_AMOUNT);
-        backLeft.setPower(FORWARD_AMOUNT);
-        backRight.setPower(-1 * FORWARD_AMOUNT);
+        if (direction >= 0) {
+            frontLeft.setPower(FORWARD_AMOUNT);
+            frontRight.setPower(-1 * FORWARD_AMOUNT);
+            backLeft.setPower(FORWARD_AMOUNT);
+            backRight.setPower(-1 * FORWARD_AMOUNT); //right
+        }
+        else {
+            frontLeft.setPower(-1 * FORWARD_AMOUNT);
+            frontRight.setPower(FORWARD_AMOUNT);
+            backLeft.setPower(-1 * FORWARD_AMOUNT);
+            backRight.setPower(FORWARD_AMOUNT);  //left
+        }
     }
 
     /**

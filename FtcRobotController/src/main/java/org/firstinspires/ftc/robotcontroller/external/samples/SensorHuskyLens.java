@@ -108,7 +108,7 @@ public class SensorHuskyLens extends LinearOpMode {
          * startup, and hence does not set an algorithm.
          *
          * Users, should, in general, explicitly choose the algorithm they want to use
-         * within the OpMode by calling selectAlgorithm() and passing it one of the values
+         * within the OpMode by calling selectAlgorithm() and passing it one of the config_arm_tester.xml
          * found in the enumeration HuskyLens.Algorithm.
          *
          * Other algorithm choices for FTC might be: OBJECT_RECOGNITION, COLOR_RECOGNITION or OBJECT_CLASSIFICATION.
@@ -150,7 +150,7 @@ public class SensorHuskyLens extends LinearOpMode {
                  * - blocks[i].x and blocks[i].y            (center location)
                  * - blocks[i].id                           (Color ID)
                  *
-                 * These values have Java type int (integer).
+                 * These config_arm_tester.xml have Java type int (integer).
                  */
             }
 

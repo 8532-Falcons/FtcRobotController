@@ -46,9 +46,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  * way, regardless of which particular make or model of color sensor is used. The OpMode
  * assumes that the color sensor is configured with a name of "sensor_color".
  *
- * There will be some variation in the values measured depending on the specific sensor you are using.
+ * There will be some variation in the config_arm_tester.xml measured depending on the specific sensor you are using.
  *
- * You can increase the gain (a multiplier to make the sensor report higher values) by holding down
+ * You can increase the gain (a multiplier to make the sensor report higher config_arm_tester.xml) by holding down
  * the A button on the gamepad, and decrease the gain by holding down the B button on the gamepad.
  *
  * If the color sensor has a light which is controllable from software, you can use the X button on
@@ -110,9 +110,9 @@ public class SensorColor extends LinearOpMode {
 
   protected void runSample() {
     // You can give the sensor a gain value, will be multiplied by the sensor's raw value before the
-    // normalized color values are calculated. Color sensors (especially the REV Color Sensor V3)
-    // can give very low values (depending on the lighting conditions), which only use a small part
-    // of the 0-1 range that is available for the red, green, and blue values. In brighter conditions,
+    // normalized color config_arm_tester.xml are calculated. Color sensors (especially the REV Color Sensor V3)
+    // can give very low config_arm_tester.xml (depending on the lighting conditions), which only use a small part
+    // of the 0-1 range that is available for the red, green, and blue config_arm_tester.xml. In brighter conditions,
     // you should use a smaller gain than in dark conditions. If your gain is too high, all of the
     // colors will report at or near 1, and you won't be able to determine what color you are
     // actually looking at. For this reason, it's better to err on the side of a lower gain
@@ -131,8 +131,8 @@ public class SensorColor extends LinearOpMode {
     boolean xButtonCurrentlyPressed = false;
 
     // Get a reference to our sensor object. It's recommended to use NormalizedColorSensor over
-    // ColorSensor, because NormalizedColorSensor consistently gives values between 0 and 1, while
-    // the values you get from ColorSensor are dependent on the specific sensor you're using.
+    // ColorSensor, because NormalizedColorSensor consistently gives config_arm_tester.xml between 0 and 1, while
+    // the config_arm_tester.xml you get from ColorSensor are dependent on the specific sensor you're using.
     colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
 
     // If possible, turn the light on in the beginning (it might already be on anyway,
@@ -148,13 +148,13 @@ public class SensorColor extends LinearOpMode {
     while (opModeIsActive()) {
       // Explain basic gain information via telemetry
       telemetry.addLine("Hold the A button on gamepad 1 to increase gain, or B to decrease it.\n");
-      telemetry.addLine("Higher gain values mean that the sensor will report larger numbers for Red, Green, and Blue, and Value\n");
+      telemetry.addLine("Higher gain config_arm_tester.xml mean that the sensor will report larger numbers for Red, Green, and Blue, and Value\n");
 
       // Update the gain value if either of the A or B gamepad buttons is being held
       if (gamepad1.a) {
         // Only increase the gain by a small amount, since this loop will occur multiple times per second.
         gain += 0.005;
-      } else if (gamepad1.b && gain > 1) { // A gain of less than 1 will make the values smaller, which is not helpful.
+      } else if (gamepad1.b && gain > 1) { // A gain of less than 1 will make the config_arm_tester.xml smaller, which is not helpful.
         gain -= 0.005;
       }
 
@@ -184,8 +184,8 @@ public class SensorColor extends LinearOpMode {
       NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
       /* Use telemetry to display feedback on the driver station. We show the red, green, and blue
-       * normalized values from the sensor (in the range of 0 to 1), as well as the equivalent
-       * HSV (hue, saturation and value) values. See http://web.archive.org/web/20190311170843/https://infohost.nmt.edu/tcc/help/pubs/colortheory/web/hsv.html
+       * normalized config_arm_tester.xml from the sensor (in the range of 0 to 1), as well as the equivalent
+       * HSV (hue, saturation and value) config_arm_tester.xml. See http://web.archive.org/web/20190311170843/https://infohost.nmt.edu/tcc/help/pubs/colortheory/web/hsv.html
        * for an explanation of HSV color. */
 
       // Update the hsvValues array by passing it to Color.colorToHSV()

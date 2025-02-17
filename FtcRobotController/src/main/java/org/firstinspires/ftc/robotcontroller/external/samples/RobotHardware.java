@@ -121,7 +121,7 @@ public class RobotHardware {
         double left  = Drive + Turn;
         double right = Drive - Turn;
 
-        // Scale the values so neither exceed +/- 1.0
+        // Scale the config_arm_tester.xml so neither exceed +/- 1.0
         double max = Math.max(Math.abs(left), Math.abs(right));
         if (max > 1.0)
         {
@@ -140,7 +140,7 @@ public class RobotHardware {
      * @param rightWheel    Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
      */
     public void setDrivePower(double leftWheel, double rightWheel) {
-        // Output the values to the motor drives.
+        // Output the config_arm_tester.xml to the motor drives.
         leftDrive.setPower(leftWheel);
         rightDrive.setPower(rightWheel);
     }

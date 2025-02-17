@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+
+<Robot type="FirstInspires-FTC">
+    <LynxUsbDevice name="Control Hub Portal" serialNumber="(embedded)" parentModuleAddress="173">
+        <!--> Control Hub </!-->
+        <LynxModule name="Control Hub" port="173">
+            <!--> Wheel motors </!-->
+            <RevRobotics40HDHexMotor name="Front Left" port="0" />
+            <RevRobotics40HDHexMotor name="Front Right" port="1" />
+            <RevRobotics40HDHexMotor name="Back Right" port="2" />
+            <RevRobotics40HDHexMotor name="Back Left " port="3" />
+            <!--> Servos </!-->
+
+            <!-->
+            <Servo name="Wrist" port="0" />
+            <ContinuousRotationServo name="Intake" port="1" />
+            </!-->
+
+            <!--> IMU (comes by default) </!-->
+            <LynxEmbeddedIMU name="IMU" port="0" bus="0" />
+        </LynxModule>
+
+        <!--> Expansion Hub 2 </!-->
+        <LynxModule name="Expansion Hub 2" port="2">
+            <!--> Large arm motor </!-->
+            <goBILDA5202SeriesMotor name="Arm" port="0" />
+            <!--> IMU (comes by default) </!-->
+            <LynxEmbeddedIMU name="Expansion IMU" port="0" bus="0" />
+        </LynxModule>
+    </LynxUsbDevice>
+</Robot>

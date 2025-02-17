@@ -192,7 +192,7 @@ public class ConceptAprilTagOptimizeExposure extends LinearOpMode
         // Set camera controls unless we are stopping.
         if (!isStopRequested())
         {
-            // Set exposure.  Make sure we are in Manual Mode for these values to take effect.
+            // Set exposure.  Make sure we are in Manual Mode for these config_arm_tester.xml to take effect.
             ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
             if (exposureControl.getMode() != ExposureControl.Mode.Manual) {
                 exposureControl.setMode(ExposureControl.Mode.Manual);
@@ -232,7 +232,7 @@ public class ConceptAprilTagOptimizeExposure extends LinearOpMode
             telemetry.update();
         }
 
-        // Get camera control values unless we are stopping.
+        // Get camera control config_arm_tester.xml unless we are stopping.
         if (!isStopRequested()) {
             ExposureControl exposureControl = visionPortal.getCameraControl(ExposureControl.class);
             minExposure = (int)exposureControl.getMinExposure(TimeUnit.MILLISECONDS) + 1;

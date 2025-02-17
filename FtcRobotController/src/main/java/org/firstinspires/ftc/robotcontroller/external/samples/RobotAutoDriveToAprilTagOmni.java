@@ -59,7 +59,7 @@ import java.util.concurrent.TimeUnit;
  * The drive goal is to rotate to keep the Tag centered in the camera, while strafing to be directly in front of the tag, and
  * driving towards the tag to achieve the desired distance.
  * To reduce any motion blur (which will interrupt the detection process) the Camera exposure is reduced to a very low value (5mS)
- * You can determine the best Exposure and Gain values by using the ConceptAprilTagOptimizeExposure OpMode in this Samples folder.
+ * You can determine the best Exposure and Gain config_arm_tester.xml by using the ConceptAprilTagOptimizeExposure OpMode in this Samples folder.
  *
  * The code assumes a Robot Configuration with motors named: leftfront_drive and rightfront_drive, leftback_drive and rightback_drive.
  * The motor directions must be set so a positive power goes forward on all wheels.
@@ -94,7 +94,7 @@ public class RobotAutoDriveToAprilTagOmni extends LinearOpMode
 
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
-    //  Drive = Error * Gain    Make these values smaller for smoother control, or larger for a more aggressive response.
+    //  Drive = Error * Gain    Make these config_arm_tester.xml smaller for smoother control, or larger for a more aggressive response.
     final double SPEED_GAIN  =  0.02  ;   //  Forward Speed Control "Gain". e.g. Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
     final double STRAFE_GAIN =  0.015 ;   //  Strafe Speed Control "Gain".  e.g. Ramp up to 37% power at a 25 degree Yaw error.   (0.375 / 25.0)
     final double TURN_GAIN   =  0.01  ;   //  Turn Control "Gain".  e.g. Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)

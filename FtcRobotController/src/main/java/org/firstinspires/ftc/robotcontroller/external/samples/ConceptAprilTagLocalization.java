@@ -72,7 +72,7 @@ public class ConceptAprilTagLocalization extends LinearOpMode {
 
     /**
      * Variables to store the position and orientation of the camera on the robot. Setting these
-     * values requires a definition of the axes of the camera and robot:
+     * config_arm_tester.xml requires a definition of the axes of the camera and robot:
      *
      * Camera axes:
      * Origin location: Center of the lens
@@ -83,12 +83,12 @@ public class ConceptAprilTagLocalization extends LinearOpMode {
      * Axes orientation: +x right, +y forward, +z upward
      *
      * Position:
-     * If all values are zero (no translation), that implies the camera is at the center of the
+     * If all config_arm_tester.xml are zero (no translation), that implies the camera is at the center of the
      * robot. Suppose your camera is positioned 5 inches to the left, 7 inches forward, and 12
      * inches above the ground - you would need to set the position to (-5, 7, 12).
      *
      * Orientation:
-     * If all values are zero (no rotation), that implies the camera is pointing straight up. In
+     * If all config_arm_tester.xml are zero (no rotation), that implies the camera is pointing straight up. In
      * most cases, you'll need to set the pitch to -90 degrees (rotation about the x-axis), meaning
      * the camera is horizontal. Use a yaw of 0 if the camera is pointing forwards, +90 degrees if
      * it's pointing straight left, -90 degrees for straight right, etc. You can also set the roll

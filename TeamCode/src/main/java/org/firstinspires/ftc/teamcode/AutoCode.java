@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import androidx.annotation.NonNull;
-
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,7 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "AutoCode", group = "2024-25")
 public class AutoCode extends LinearOpMode {
-    private DcMotor frontLeft, frontRight, backLeft, backRight, arm;
+    private DcMotor frontLeft, frontRight, backLeft, backRight, leftArm, rightArm;
     private Servo wrist;
     private CRServo intake;
     private IMU imu;
@@ -41,7 +39,8 @@ public class AutoCode extends LinearOpMode {
         frontRight = hardwareMap.dcMotor.get("Front Right"); // front-right wheel
         backLeft = hardwareMap.dcMotor.get("Back Left"); // back-left wheel
         backRight = hardwareMap.dcMotor.get("Back Right"); // back-right wheel
-        arm = hardwareMap.dcMotor.get("Arm"); // arm motor
+        leftArm = hardwareMap.dcMotor.get("Left Arm"); // arm motor
+        rightArm = hardwareMap.dcMotor.get("Right Arm");
 
         // Fetches servos from hardwareMap
         intake = hardwareMap.crservo.get("Intake"); // intake servo
@@ -56,7 +55,7 @@ public class AutoCode extends LinearOpMode {
         // Initializes new mecanum controller using motors
         mecControl = new MecanumController(frontLeft, frontRight, backLeft, backRight);
         // Initializes new arm controller using motors and servos
-        armControl = new ArmController(arm, wrist, intake);
+        armControl = new ArmController(leftArm, rightArm, wrist, intake);
 
         // Resets arm
         armControl.reset();

@@ -26,13 +26,14 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Controller that manages the robot's arm & intake
  */
 public class ArmController {
-    private DcMotor arm;
+    private DcMotor leftArm, rightArm;
     private Servo wrist;
     private CRServo intake;
 
@@ -46,27 +47,25 @@ public class ArmController {
     /*
     Constants representing the degree the arm must be in for different situations
      */
-    final double ARM_COLLAPSED_INTO_ROBOT  = 0;
-    final double ARM_COLLECT               = 250;
-    final double ARM_CLEAR_BARRIER         = 230;
-    final double ARM_SCORE_SPECIMEN        = 160;
-    final double ARM_SCORE_SAMPLE_IN_LOW   = 160;
-    final double ARM_ATTACH_HANGING_HOOK   = 120;
-    final double ARM_WINCH_ROBOT           = 15;
+    private final double ARM_COLLAPSED_INTO_ROBOT  = 0;
+    private final double ARM_COLLECT               = 250;
+    private final double ARM_CLEAR_BARRIER         = 230;
+    private final double ARM_SCORE_SPECIMEN        = 160;
+    private final double ARM_SCORE_SAMPLE_IN_LOW   = 160;
+    private final double ARM_ATTACH_HANGING_HOOK   = 120;
+    private final double ARM_WINCH_ROBOT           = 15;
 
-    /*
-    Variables to store the speed the intake servo should be set at to intake, and deposit game elements.
-    */
-    final double INTAKE_COLLECT    = -1.0;
-    final double INTAKE_OFF        =  0.0;
-    final double INTAKE_DEPOSIT    =  0.5;
+    /* Variables to store the speed the intake servo should be set at to intake, and deposit game elements. */
+    private final double INTAKE_COLLECT    = -1.0;
+    private final double INTAKE_OFF        =  0.0;
+    private final double INTAKE_DEPOSIT    =  0.5;
 
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
-    final double WRIST_FOLDED_IN   = 0.8333;
-    final double WRIST_FOLDED_OUT  = 0.5;
+    private final double WRIST_FOLDED_IN   = 0.8333;
+    private final double WRIST_FOLDED_OUT  = 0.5;
 
     /* A number in degrees that the triggers can adjust the arm position by */
-    final double FUDGE_FACTOR = 15 * ARM_TICKS_PER_DEGREE;
+    private final double FUDGE_FACTOR = 15;
 
     /**
      * Actions that the intake can do
@@ -86,12 +85,17 @@ public class ArmController {
         TURN_OFF
     }
 
-    public ArmController(DcMotor arm, Servo wrist, CRServo intake) {
-        this.arm = arm;
+    public ArmController(DcMotor leftArm, DcMotor rightArm, Servo wrist, CRServo intake) {
+        this.leftArm = leftArm;
+        this.rightArm = rightArm;
         this.wrist = wrist;
         this.intake = intake;
+        // Reverses right arm motor
+        this.rightArm.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        this.arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        // Sets the arm to brake when motor power is zero
+        this.leftArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.rightArm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     /**
@@ -146,9 +150,9 @@ public class ArmController {
     public void moveArm(double armPosition) {
         // Sets the encoder target position to the arm position, multiplied by the arm tick
         // conversion factor
-        arm.setTargetPosition((int) (armPosition * ARM_TICKS_PER_DEGREE));
-        ((DcMotorEx) arm).setVelocity(2100);
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftArm.setTargetPosition((int) (armPosition * ARM_TICKS_PER_DEGREE));
+        ((DcMotorEx) leftArm).setVelocity(2100);
+        leftArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     /**
@@ -157,7 +161,7 @@ public class ArmController {
     public void reset() {
         controlIntake(INTAKE_ACTION.TURN_OFF); // stops intake
         foldWristIn(); // folds wrist in
-        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // resets arm encoder
+        leftArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // resets arm encoder
 //        moveArm(90 * ARM_TICKS_PER_DEGREE);
 //        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // resets arm encoder
     }

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import androidx.annotation.NonNull;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -15,9 +15,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
  * This code is an autonomous op mode made to test various features of the robot
  */
 
-@Autonomous(name = "Tester", group = "2024-25")
+@TeleOp(name = "Tester", group = "2024-25")
 public class Tester extends LinearOpMode {
-    private DcMotor frontLeft, frontRight, backLeft, backRight, arm;
+    private DcMotor frontLeft, frontRight, backLeft, backRight, leftArm, rightArm;
     private IMU imu;
     private MecanumController mecControl;
     private ArmOnlyController armControl;
@@ -31,7 +31,8 @@ public class Tester extends LinearOpMode {
         frontRight = hardwareMap.dcMotor.get("Front Right"); // front-right wheel
         backLeft = hardwareMap.dcMotor.get("Back Left"); // back-left wheel
         backRight = hardwareMap.dcMotor.get("Back Right"); // back-right wheel
-        arm = hardwareMap.dcMotor.get("Arm"); // arm motor
+        leftArm = hardwareMap.dcMotor.get("Left Arm"); // left arm motor
+        rightArm = hardwareMap.dcMotor.get("Right Arm"); // left arm motor
 
         // Records orientation of IMU, which will be used in initialization
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
@@ -49,7 +50,7 @@ public class Tester extends LinearOpMode {
         // Initializes new mecanum controller using motors
         mecControl = new MecanumController(frontLeft, frontRight, backLeft, backRight);
         // Initializes new arm controller using motors and servos
-        armControl = new ArmOnlyController(arm);
+        armControl = new ArmOnlyController(leftArm, rightArm);
 
         // Resets arm
         armControl.reset();
@@ -57,15 +58,21 @@ public class Tester extends LinearOpMode {
         // Op mode waits for the play button to be pressed
         waitForStart();
 
-        armAngleTest(0, 3);
-        armAngleTest(45, 3);
-        armAngleTest(90, 3);
-        armAngleTest(135, 3);
-        armAngleTest(180, 3);
-        armAngleTest(0, 3);
-
         while(opModeIsActive()) {
-            armControl.moveArm(0);
+            if (gamepad1.dpad_down) {
+                armControl.setTarget(0);
+            }
+            else if (gamepad1.dpad_left) {
+                armControl.setTarget(45);
+            }
+            else if (gamepad1.dpad_right) {
+                armControl.setTarget(90);
+            }
+            else if (gamepad1.dpad_up) {
+                armControl.setTarget(180);
+            }
+
+            armControl.updateArm();
         }
     }
 
@@ -86,6 +93,7 @@ public class Tester extends LinearOpMode {
         // Stops motor
         motor.setPower(0);
     }
+
 
     /**
      * Tests mecanum movement (represented in {@link MecanumController#moveBot(double, double)})
@@ -113,6 +121,7 @@ public class Tester extends LinearOpMode {
         mecControl.brake();
     }
 
+
     /**
      * Tests single-spot drift (represented in {@link MecanumController#singleSpotDrift(float, int)})
      * @param time Amount of time (in seconds) drifting (turning)
@@ -136,21 +145,25 @@ public class Tester extends LinearOpMode {
         telemetry.update();
     }
 
+
     /**
-     * Tests individual DC motors for correct port and orientation
-     * @param angle Motor being tested
+     * DEPRECATED - moveArm has been replaced with PID
+     * <br>
+     * Tests the arm's movement (represented in {@link ArmOnlyController#moveArm(double)})
+     * @param angle Degree at which the motor is moved to
      * @param time  Number of seconds to hold motor
      */
+    @Deprecated
     public void armAngleTest(double angle, int time) {
         // Starts motor power to max power of one
         armControl.moveArm(angle);
         // Adds motor name to telemetry and updates
         telemetry.addData("Angle", angle);
-        telemetry.addData("Target position", arm.getTargetPosition());
+        telemetry.addData("Target position", leftArm.getTargetPosition());
         telemetry.update();
         // Runs for one second
         sleep((long) time * 1000);
-        telemetry.addData("Current position", arm.getCurrentPosition());
+        telemetry.addData("Current position", leftArm.getCurrentPosition());
         telemetry.update();
         sleep(1000L);
     }

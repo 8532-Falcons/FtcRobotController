@@ -77,9 +77,9 @@ public class TeleopCodeNoArm extends LinearOpMode {
                 telemetry.update();
             }
 
-            /* TODO: implement singleSpotDrift as controls
-            1) What are the controls?
-            2) Use singleSpotDrift from MecanumController
+            /*
+            Controls single-spot drift
+            Left/right direction of drift is dependent on right gamepad
              */
              else if (Math.hypot(right_x, right_y) > 0) {
                 mecControl.singleSpotDrift(0, (int) (right_x / abs(right_x)));

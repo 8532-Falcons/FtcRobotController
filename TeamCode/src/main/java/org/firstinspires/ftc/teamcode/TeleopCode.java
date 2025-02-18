@@ -15,11 +15,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="Teleop 2024-25", group = "2024-25")
 public class TeleopCode extends LinearOpMode {
-    private DcMotor frontLeft, frontRight, backLeft, backRight, arm;
+    private DcMotor frontLeft, frontRight, backLeft, backRight, leftArm, rightArm;
     private Servo wrist;
     private CRServo intake;
     private MecanumController mecControl;
-    private ArmController armControl;
+    // TODO: Replace ArmOnlyController with ArmController
+    private ArmOnlyController armControl;
 
     @Override
     public void runOpMode() {
@@ -29,7 +30,8 @@ public class TeleopCode extends LinearOpMode {
         frontRight = hardwareMap.dcMotor.get("Front Right"); // front-right wheel
         backLeft = hardwareMap.dcMotor.get("Back Left"); // back-left wheel
         backRight = hardwareMap.dcMotor.get("Back Right"); // back-right wheel
-        arm = hardwareMap.dcMotor.get("Arm"); // arm motor
+        leftArm = hardwareMap.dcMotor.get("Left Arm"); // arm motor
+        rightArm = hardwareMap.dcMotor.get("Right Arm");
 
         // Fetches servos from hardwareMap
         wrist  = hardwareMap.servo.get("Wrist"); // wrist servo
@@ -38,37 +40,14 @@ public class TeleopCode extends LinearOpMode {
         // Initializes new mecanum controller using motors
         mecControl = new MecanumController(frontLeft, frontRight, backLeft, backRight);
         // Initializes new arm controller using motors and servos
-        armControl = new ArmController(arm, wrist, intake);
+        //armControl = new ArmController(leftArm, rightArm, wrist, intake);
+        armControl = new ArmOnlyController(leftArm, rightArm);
 
         // Resets arm
         armControl.reset();
 
         // Op mode waits for the play button to be pressed
         waitForStart();
-
-        armControl.moveArm(90);
-
-        sleep(1000);
-
-        telemetry.addLine("Reached 90");
-        telemetry.update();
-
-        armControl.moveArm(180);
-
-
-        sleep(1000);
-
-        telemetry.addLine("Reached 180");
-        telemetry.update();
-
-        armControl.moveArm(270);
-
-        sleep(1000);
-
-        telemetry.addLine("Reached 270");
-        telemetry.update();
-
-        armControl.moveArm(0);
 
         // TELEOP PERIOD - CODE LOOPS WHILE OP MODE IS ACTIVE
         while (opModeIsActive()) {
@@ -127,6 +106,8 @@ public class TeleopCode extends LinearOpMode {
             else if (gamepad1.right_bumper)  {
                 armControl.scoreSampleLow();
             }
+
+            armControl.updateArm();
 
             //
             /*else if (gamepad1.right_trigger > 0) {

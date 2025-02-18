@@ -18,8 +18,9 @@
 
         <!--> Expansion Hub </!-->
        <LynxModule name="Expansion Hub 2" port="2">
-           <!--> Large arm motor </!-->
-           <goBILDA5202SeriesMotor name="Arm" port="0" />
+           <!--> Arm motors </!-->
+           <goBILDA5202SeriesMotor name="Left Arm" port="0" />
+           <goBILDA5202SeriesMotor name="Right Arm" port="1" />
            <!--> IMU (comes by default) </!-->
            <LynxEmbeddedIMU name="Expansion IMU" port="0" bus="0" />
        </LynxModule>

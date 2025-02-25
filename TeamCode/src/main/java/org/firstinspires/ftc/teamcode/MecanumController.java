@@ -105,11 +105,11 @@ public class MecanumController {
     private void normalize(double flPower, double frPower, double blPower, double brPower) {
         // Finds the maximum power (by absolute value) of the four motor powers
         double maxPower = Math.max(Math.abs(flPower), // front-left motor
-            Math.max(Math.abs(frPower), // front-right motor
-                Math.max(Math.abs(blPower), // back-left motor
-                    Math.abs(brPower)
+                Math.max(Math.abs(frPower), // front-right motor
+                        Math.max(Math.abs(blPower), // back-left motor
+                                Math.abs(brPower)
+                        )
                 )
-            )
         );
 
         // Normalizes motor powers by dividing them by the maximum power, then sets motor powers

@@ -27,19 +27,24 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import java.util.HashMap;
+
 /**
  * Controller that manages the robot's arm & intake
  */
 public class ArmOnlyController {
     private final DcMotor leftArm, rightArm, encoderMotor;
-    private final PIDController pidControl;
-    private final double KP = 1.0;
-    private final double KI = 0.0;
-    private final double KD = 0.0;
-    private final int TOLERANCE = 10;
+    private final ArmPIDFController pidfControl;
+    // TODO: tune the PID constants
+    private final double KP     = 0.011;
+    private final double KI     = 0;
+    private final double KD     = 0.02;
+    private final double KF     = 0.5775;
+    private final int OFFSET    = -29;
+    private final int TOLERANCE = 8;
 
     /* This constant is the number of encoder ticks for each degree of rotation of the arm. */
-    private final double ARM_TICKS_PER_DEGREE =
+    public static final double ARM_TICKS_PER_DEGREE =
         28 // number of encoder ticks per rotation of the bare motor
             * ((1.0 + (47.0 / 17.0)) * (1.0 + (46.0 / 11.0))) // Gear ratio from 5203-2402-0019 (312 RPM)
             * 1/360.0; // converts from ticks per rotation to ticks per degrees
@@ -47,25 +52,25 @@ public class ArmOnlyController {
     /*
     Constants representing the degree the arm must be in for different situations
      */
-    private final int ARM_COLLAPSED_INTO_ROBOT  = 0;
-    private final int ARM_COLLECT               = 250;
-    private final int ARM_CLEAR_BARRIER         = 230;
-    private final int ARM_SCORE_SPECIMEN        = 160;
-    private final int ARM_SCORE_SAMPLE_IN_LOW   = 160;
-    private final int ARM_ATTACH_HANGING_HOOK   = 120;
-    private final int ARM_WINCH_ROBOT           = 15;
+    private static final int ARM_COLLAPSED_INTO_ROBOT  = 0;
+    private static final int ARM_COLLECT               = 250;
+    private static final int ARM_CLEAR_BARRIER         = 230;
+    private static final int ARM_SCORE_SPECIMEN        = 160;
+    private static final int ARM_SCORE_SAMPLE_IN_LOW   = 160;
+    private static final int ARM_ATTACH_HANGING_HOOK   = 120;
+    private static final int ARM_WINCH_ROBOT           = 15;
 
     /* Variables to store the speed the intake servo should be set at to intake, and deposit game elements. */
-    private final double INTAKE_COLLECT    = -1.0;
-    private final double INTAKE_OFF        =  0.0;
-    private final double INTAKE_DEPOSIT    =  0.5;
+    private static final double INTAKE_COLLECT   = -1.0;
+    private static final double INTAKE_OFF       =  0.0;
+    private static final double INTAKE_DEPOSIT   =  0.5;
 
     /* Variables to store the positions that the wrist should be set to when folding in, or folding out. */
-    private final double WRIST_FOLDED_IN   = 0.8333;
-    private final double WRIST_FOLDED_OUT  = 0.5;
+    private static final double WRIST_FOLDED_IN   = 0.8333;
+    private static final double WRIST_FOLDED_OUT  = 0.5;
 
     /* A number in degrees that the triggers can adjust the arm position by */
-    private final double FUDGE_FACTOR = 15;
+    private static final double FUDGE_FACTOR = 15;
 
     /**
      * Actions that the intake can do
@@ -103,7 +108,7 @@ public class ArmOnlyController {
         this.leftArm = leftArm;
         this.rightArm = rightArm;
 
-        // Reverses right arm motor
+        // Reverses arm motors
         this.rightArm.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // Sets the arm to brake when motor power is zero
@@ -114,7 +119,7 @@ public class ArmOnlyController {
         this.encoderMotor = leftArm;
 
         // Creates PID controller for arm based on PID constants
-        this.pidControl = new PIDController(KP, KI, KD);
+        this.pidfControl = new ArmPIDFController(KP, KI, KD, KF, OFFSET);
     }
 
     /**
@@ -184,7 +189,7 @@ public class ArmOnlyController {
      */
     @Deprecated
     public void moveArm(double armDegree) {
-        // sets the
+        // sets the target
         leftArm.setTargetPosition((int) (armDegree * ARM_TICKS_PER_DEGREE));
         // Tells arm to run to position
         leftArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -201,10 +206,8 @@ public class ArmOnlyController {
 //        arm.setTargetPosition(0); // moves to target position
 //        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION); // runs to position
         leftArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // resets arm encoder
-        leftArm.setTargetPosition(0); // moves to target position
-        leftArm.setMode(DcMotor.RunMode.RUN_TO_POSITION); // runs to position
-//        moveArm(90 * ARM_TICKS_PER_DEGREE);
-//        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // resets arm encoder
+        // leftArm.setTargetPosition(0); // moves to target position
+        leftArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER); // sets motor to run without encoder
     }
 
     /**
@@ -269,46 +272,59 @@ public class ArmOnlyController {
 
     /**
      * Tells the arm to move to specific target
-     * @param target
+     * @param target angle (in degrees) that the arm should reach
      */
     public void setTarget(int target) {
         // Sets target of PID
         // Note: multiplies by ARM_TICKS_PER_DEGREE to convert from degrees to encoder ticks
-        pidControl.setTarget((int) (target * ARM_TICKS_PER_DEGREE));
+        pidfControl.setTarget((int) (-1 * target * ARM_TICKS_PER_DEGREE));
     }
+
+    /**
+     * Retrieves the target angle of the arm
+     * @return target value in degrees
+     */
+    public double getTargetAngle() {
+        return pidfControl.getTarget() /  ARM_TICKS_PER_DEGREE;
+    }
+
 
     /**
      * Sets both arm motors to specific power
      * @param power Power to set left motor
      */
-    private void setArmPowers(double power) {
+    public void setArmPowers(double power) {
         leftArm.setPower(power);
         rightArm.setPower(power);
     }
 
     /**
-     * Updates the powers of the arm motors, based on its PID controls
+     * Returns the PIDF values of the underlying PIDF controller
+     * @return an array of the PIDF constant values in the order kP, kI, kD, and KF
      */
-    public void updateArm() {
-        int currentPosition = this.encoderMotor.getCurrentPosition();
-        int error = pidControl.getTarget() - currentPosition;
-
-        if (Math.abs(error) <= TOLERANCE) {
-            return;
-        }
-        // Based on internal PID,
-        int power = (int) pidControl.calculateOutput(error);
-        // Moves rams based on calculated powers
-        setArmPowers(power);
-        // Updates PID to include the error values/
-        pidControl.updateErrors(error);
+    public HashMap<String, Double> pidValues() {
+        return pidfControl.pidValues();
     }
 
     /**
-     * Returns the PID values of the underlying PID controller
-     * @return an array holding the values of the
+     * Updates the powers of the arm motors, based on its PID controls
+     * @param time (in seconds) that has passed
+     * @return whether the arm has reached the target or tolerance range
      */
-    public double[] pidValues() {
-        return new double[] {KP, KI, KD};
+    public boolean updateArm(double time) {
+        // Positions and error are all in arm ticks, not degrees
+        int currentPosition = this.encoderMotor.getCurrentPosition();
+        int error = pidfControl.getTarget() - currentPosition;
+        // Returns true if the arm is within the tolerance range
+        if (Math.abs(error) <= TOLERANCE) {
+            return true;
+        }
+        // Sets the powers of each motor based on the PID output
+        double power = pidfControl.pidOutput(error, currentPosition);
+        // Moves arms based on calculated powers
+        setArmPowers(power);
+        // Updates PID to include the error values
+        pidfControl.updateErrors(error, time);
+        return false;
     }
 }
